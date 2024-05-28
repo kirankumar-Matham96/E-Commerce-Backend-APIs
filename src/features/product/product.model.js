@@ -24,27 +24,17 @@ class ProductModel {
     this.sizes = sizes;
   }
 
-  static addProduct = (productData) => {
-    console.log({ productData });
-    const {
-      name,
-      description,
-      quantity,
-      imageUrl,
-      category,
-      price,
-      sizes,
-      rating,
-    } = productData;
+  static addProduct = (product) => {
+    console.log(product.imageUrl);
     const newProduct = new ProductModel(
-      name,
-      description,
-      quantity,
-      imageUrl,
-      category,
-      price,
-      sizes,
-      rating
+      product.name,
+      product.description,
+      product.quantity,
+      product.imageUrl,
+      product.category,
+      product.price,
+      product.sizes,
+      product.rating
     );
     products.push(newProduct);
   };

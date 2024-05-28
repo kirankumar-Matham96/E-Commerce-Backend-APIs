@@ -6,8 +6,49 @@ export default class ProductController {
     res.status(200).send({ message: "Retrieved all the products!", products });
   };
 
-  addProduct = (req, res) => {
-    ProductModel.addProduct(req.body);
+  addProductWithImageUrl = (req, res) => {
+    const {
+      name,
+      description,
+      quantity,
+      imageUrl,
+      category,
+      price,
+      sizes,
+      rating,
+    } = req.body;
+
+    const product = {
+      name: req.body.name,
+      description: req.body.description,
+      quantity: req.body.quantity,
+      imageUrl: req.body.imageUrl,
+      category: req.body.category,
+      price: req.body.price,
+      sizes: req.body.sizes.split(","),
+      rating: req.body.rating,
+    };
+
+    ProductModel.addProduct(product);
+    res.status(201).send({ message: "Product added successfully!" });
+  };
+
+  addProductWithImageFile = (req, res) => {
+    const { name, description, quantity, category, price, sizes, rating } =
+      req.body;
+
+    console.log("file name in controller => ", req.file.filename);
+    const product = {
+      name: req.body.name,
+      description: req.body.description,
+      quantity: req.body.quantity,
+      imageUrl: req.file.filename,
+      category: req.body.category,
+      price: req.body.price,
+      sizes: req.body.sizes.split(","),
+      rating: req.body.rating,
+    };
+    ProductModel.addProduct(product);
     res.status(201).send({ message: "Product added successfully!" });
   };
 
