@@ -1,4 +1,4 @@
-// imports 
+// imports
 import express from "express";
 import ProductController from "./product.controller.js";
 
@@ -11,4 +11,4 @@ const productController = new ProductController();
 router.get("/", productController.getAllProducts);
 // router.get("/", productController.getOneProduct);
 // router.get("/", productController.rateProduct);
-router.post("/", productController.addProduct);
+router.post("/add", productController.addProduct);
