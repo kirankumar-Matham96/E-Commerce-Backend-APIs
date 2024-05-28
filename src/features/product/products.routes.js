@@ -10,7 +10,7 @@ const productController = new ProductController();
 
 // all the paths to controller methods
 router.get("/", productController.getAllProducts);
-// router.get("/", productController.getOneProduct);
+router.get("/:id", productController.getOneProduct);
 // router.get("/", productController.rateProduct);
 router.post(
   "/add-width-image-file",
