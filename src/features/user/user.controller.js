@@ -1,6 +1,6 @@
 import UserModel from "./user.model.js";
 import jwt from "jsonwebtoken";
-require("dotenv").config();
+import 'dotenv/config';
 
 class UserController {
   getAllUsers = (req, res) => {

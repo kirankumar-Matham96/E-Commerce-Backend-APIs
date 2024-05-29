@@ -1,7 +1,8 @@
 import express from "express";
 import { router as ProductRouter } from "./src/features/product/products.routes.js";
 import { router as UserRouter } from "./src/features/user/user.routes.js";
-import basicAuthorizer from "./src/middleware/basicAuth.middleware.js";
+// import basicAuthorizer from "./src/middleware/basicAuth.middleware.js";
+import { jwtAuth } from "./src/middleware/jwtAuth.middleware.js";
 
 const PORT = 3600;
 const app = express();
@@ -15,7 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // for all the requests related to products, redirect to product routes.
-app.use("/api/products", basicAuthorizer, ProductRouter);
+app.use("/api/products", jwtAuth, ProductRouter);
 
 // for user requests related to register and login
 app.use("/api/users", UserRouter);
