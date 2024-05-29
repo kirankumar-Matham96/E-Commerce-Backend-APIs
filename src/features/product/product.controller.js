@@ -2,7 +2,7 @@ import ProductModel from "./product.model.js";
 
 export default class ProductController {
   getAllProducts = (req, res) => {
-    const products = ProductModel.getAllProducts();
+    const products = ProductModel.getAll();
     res.status(200).send({ message: "Retrieved all the products!", products });
   };
 
@@ -29,7 +29,7 @@ export default class ProductController {
       rating: req.body.rating,
     };
 
-    ProductModel.addProduct(product);
+    ProductModel.add(product);
     res.status(201).send({ message: "Product added successfully!" });
   };
 
@@ -48,24 +48,30 @@ export default class ProductController {
       sizes: req.body.sizes.split(","),
       rating: req.body.rating,
     };
-    ProductModel.addProduct(product);
+    ProductModel.add(product);
     res.status(201).send({ message: "Product added successfully!" });
   };
 
   rateProduct = (req, res) => {
     const { id } = req.params;
-    ProductModel.rateProduct(id, req.body.rating);
+    ProductModel.rate(id, req.body.rating);
     res.status(200).send({ message: "Rating added successfully!" });
   };
 
   getOneProduct = (req, res) => {
     const { id } = req.params;
-    const product = ProductModel.getProduct(id);
+    const product = ProductModel.get(id);
     if (product) {
       return res
         .status(200)
         .send({ message: "Retrieved all the products!", product });
     }
     return res.status(404).send({ message: "Product not found!" });
+  };
+
+  filterProducts = (req, res) => {
+    const { minPrice, maxPrice, category } = req.query;
+    const filteredProducts = ProductModel.filter(minPrice, maxPrice, category);
+    res.status(200).send({ products: filteredProducts });
   };
 }

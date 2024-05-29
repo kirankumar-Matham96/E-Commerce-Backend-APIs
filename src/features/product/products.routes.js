@@ -10,11 +10,15 @@ const productController = new ProductController();
 
 // all the paths to controller methods
 router.get("/", productController.getAllProducts);
+router.get("/filter", productController.filterProducts);
 router.get("/:id", productController.getOneProduct);
-// router.get("/", productController.rateProduct);
 router.post(
   "/add-width-image-file",
   uploadFile.single("imageUrl"),
   productController.addProductWithImageFile
 );
 router.post("/add-with-image-url", productController.addProductWithImageUrl);
+
+router.get("*", (req, res) => {
+  res.status(404).send("Page/Product not found!");
+});

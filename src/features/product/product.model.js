@@ -1,6 +1,62 @@
 import { v4 as uuidv4 } from "uuid";
 
-const products = [];
+const products = [
+  {
+    id: uuidv4(),
+    name: "Leather Jacket",
+    price: 199.99,
+    quantity: 20,
+    description: "Comfortable leather jacket for riders",
+    imageUrl: "https://m.media-amazon.com/images/I/619KZMkHQBL._SX679_.jpg",
+    category: "clothes",
+    sizes: "xs,s,m,l,xl,xxl,xxxl",
+    rating: "",
+  },
+  {
+    id: uuidv4(),
+    name: "Leather Jacket",
+    price: 249.99,
+    quantity: 20,
+    description: "Comfortable leather jacket for riders",
+    imageUrl: "https://m.media-amazon.com/images/I/619KZMkHQBL._SX679_.jpg",
+    category: "clothes",
+    sizes: "xs,s,m,l,xl,xxl,xxxl",
+    rating: "",
+  },
+  {
+    id: uuidv4(),
+    name: "Leather Jacket",
+    price: 601.29,
+    quantity: 20,
+    description: "Comfortable leather jacket for riders",
+    imageUrl: "https://m.media-amazon.com/images/I/619KZMkHQBL._SX679_.jpg",
+    category: "clothes",
+    sizes: "xs,s,m,l,xl,xxl,xxxl",
+    rating: "",
+  },
+  {
+    id: uuidv4(),
+    name: "Leather Jacket",
+    price: 499.59,
+    quantity: 20,
+    description: "Comfortable leather jacket for riders",
+    imageUrl: "https://m.media-amazon.com/images/I/619KZMkHQBL._SX679_.jpg",
+    category: "footwear",
+    sizes: "xs,s,m,l,xl,xxl,xxxl",
+    rating: "",
+  },
+  {
+    id: uuidv4(),
+    name: "Leather Jacket",
+    price: 399.59,
+    quantity: 20,
+    description: "Comfortable leather jacket for riders",
+    imageUrl: "https://m.media-amazon.com/images/I/619KZMkHQBL._SX679_.jpg",
+    category: "footwear",
+    sizes: "xs,s,m,l,xl,xxl,xxxl",
+    rating: "",
+  },
+];
 
 class ProductModel {
   constructor(
@@ -24,7 +80,7 @@ class ProductModel {
     this.sizes = sizes;
   }
 
-  static addProduct = (product) => {
+  static add = (product) => {
     console.log(product.imageUrl);
     const newProduct = new ProductModel(
       product.name,
@@ -39,18 +95,32 @@ class ProductModel {
     products.push(newProduct);
   };
 
-  static getAllProducts = () => {
+  static getAll = () => {
     return products;
   };
 
-  static rateProduct = (id, rating) => {
+  static rate = (id, rating) => {
     const productFound = products.find((p) => p.id === id);
     productFound.rating = rating;
   };
 
-  static getProduct = (id) => {
+  static get = (id) => {
     const productFound = products.find((p) => p.id === id);
     return productFound;
+  };
+
+  static filter = (minPrice, maxPrice, category) => {
+    const result = products.filter((product) => {
+      if (
+        (!minPrice || product.price >= minPrice) &&
+        (!maxPrice || product.price <= maxPrice) &&
+        (!category || product.category === category)
+      ) {
+        return product;
+      }
+    });
+
+    return result;
   };
 }
 
