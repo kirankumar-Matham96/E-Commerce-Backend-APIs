@@ -81,7 +81,6 @@ class ProductModel {
   }
 
   static add = (product) => {
-    console.log(product.imageUrl);
     const newProduct = new ProductModel(
       product.name,
       product.description,

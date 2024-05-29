@@ -37,7 +37,6 @@ export default class ProductController {
     const { name, description, quantity, category, price, sizes, rating } =
       req.body;
 
-    console.log("file name in controller => ", req.file.filename);
     const product = {
       name: req.body.name,
       description: req.body.description,
