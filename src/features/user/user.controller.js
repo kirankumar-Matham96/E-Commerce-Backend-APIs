@@ -1,6 +1,6 @@
 import UserModel from "./user.model.js";
 import jwt from "jsonwebtoken";
-import 'dotenv/config';
+import "dotenv/config";
 
 class UserController {
   getAllUsers = (req, res) => {
@@ -20,28 +20,41 @@ class UserController {
 
   userSignup = (req, res) => {
     UserModel.create(req.body);
-    res.status(201).json({ status: "success", message: "User created successfully" });
+    res
+      .status(201)
+      .json({ status: "success", message: "User created successfully" });
   };
 
-  // updateUser = (req, res) => {
-  //   const { id } = req.params;
-  //   UserModel.update(id, req.body);
-  // };
-
   userSignIn = (req, res) => {
-
-    
     const userFound = UserModel.login(req.body);
     if (userFound && userFound.password === req.body.password) {
-      
       // creating jwt
-      const jwtToken = jwt.sign({id: userFound.id, email: userFound.email}, process.env.SECRET_KEY, {
-        expiresIn: "1h"
+      const jwtToken = jwt.sign(
+        { id: userFound.id, email: userFound.email },
+        process.env.SECRET_KEY,
+        {
+          expiresIn: "1h",
+        }
+      );
+      // storing the token in cookies
+      res.cookie("jwtToken", jwtToken, {
+        maxAge: 1000 * 60 * 60,
       });
-
-      return res.status(200).json({ status: "success", message: "login success!", token: jwtToken });
+      return res.status(200).json({
+        status: "success",
+        message: "login success!",
+        token: jwtToken,
+      });
     }
-    return res.status(401).json({ status: "failure", error: "Invalid credentials" });
+    return res
+      .status(401)
+      .json({ status: "failure", error: "Invalid credentials" });
+  };
+
+  userSignOut = (req, res) => {
+    // clearing the cookies
+    res.clearCookie("jwtToken");
+    res.status(200).json({ status: "success", msg: "Logged out!" });
   };
 }
 

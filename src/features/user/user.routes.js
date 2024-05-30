@@ -13,6 +13,9 @@ router.post(
   validateUser.validateUserSignIn,
   userController.userSignIn
 );
+
+router.get("/logout", userController.userSignOut);
+
 router.post(
   "/register",
   validateUser.validateUserSignUp,

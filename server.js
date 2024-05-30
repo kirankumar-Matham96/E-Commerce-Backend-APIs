@@ -1,4 +1,5 @@
 import express from "express";
+import cookiesParser from "cookie-parser";
 import { router as ProductRouter } from "./src/features/product/products.routes.js";
 import { router as UserRouter } from "./src/features/user/user.routes.js";
 // import basicAuthorizer from "./src/middleware/basicAuth.middleware.js";
@@ -14,6 +15,8 @@ app.get("/", (req, res) => {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(cookiesParser());
 
 // for all the requests related to products, redirect to product routes.
 app.use("/api/products", jwtAuth, ProductRouter);
