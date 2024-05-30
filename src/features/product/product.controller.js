@@ -53,7 +53,14 @@ export default class ProductController {
 
   rateProduct = (req, res) => {
     const { id } = req.params;
-    ProductModel.rate(id, req.body.rating);
+    const { userId, rating } = req.query;
+    const response = ProductModel.rate(userId, id, rating);
+    if (response === "Product not found") {
+      return res
+        .status(401)
+        .json({ status: "failure", error: "Product not found" });
+    }
+
     res.status(200).send({ message: "Rating added successfully!" });
   };
 

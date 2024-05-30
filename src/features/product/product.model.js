@@ -10,7 +10,7 @@ const products = [
     imageUrl: "https://m.media-amazon.com/images/I/619KZMkHQBL._SX679_.jpg",
     category: "clothes",
     sizes: "xs,s,m,l,xl,xxl,xxxl",
-    rating: "",
+    rating: [],
   },
   {
     id: uuidv4(),
@@ -21,7 +21,7 @@ const products = [
     imageUrl: "https://m.media-amazon.com/images/I/619KZMkHQBL._SX679_.jpg",
     category: "clothes",
     sizes: "xs,s,m,l,xl,xxl,xxxl",
-    rating: "",
+    rating: [],
   },
   {
     id: uuidv4(),
@@ -32,7 +32,7 @@ const products = [
     imageUrl: "https://m.media-amazon.com/images/I/619KZMkHQBL._SX679_.jpg",
     category: "clothes",
     sizes: "xs,s,m,l,xl,xxl,xxxl",
-    rating: "",
+    rating: [],
   },
   {
     id: uuidv4(),
@@ -43,7 +43,7 @@ const products = [
     imageUrl: "https://m.media-amazon.com/images/I/619KZMkHQBL._SX679_.jpg",
     category: "footwear",
     sizes: "xs,s,m,l,xl,xxl,xxxl",
-    rating: "",
+    rating: [],
   },
   {
     id: uuidv4(),
@@ -54,7 +54,7 @@ const products = [
     imageUrl: "https://m.media-amazon.com/images/I/619KZMkHQBL._SX679_.jpg",
     category: "footwear",
     sizes: "xs,s,m,l,xl,xxl,xxxl",
-    rating: "",
+    rating: [],
   },
 ];
 
@@ -67,7 +67,7 @@ class ProductModel {
     category,
     price,
     sizes,
-    rating
+    rating = []
   ) {
     this.id = uuidv4();
     this.name = name;
@@ -98,9 +98,20 @@ class ProductModel {
     return products;
   };
 
-  static rate = (id, rating) => {
-    const productFound = products.find((p) => p.id === id);
-    productFound.rating = rating;
+  static rate = (userId, productId, rating) => {
+    const productFound = products.find((p) => p.id === productId);
+    if (!productFound) {
+      return "Product not found";
+    }
+
+    // adding rating for the first time
+    productFound.rating.push({ userId, rating });
+
+    // if the user rated the product already and now want to update/modify rating
+    const foundRating = productFound.rating.find(
+      (rating) => rating.userId === userId
+    );
+    foundRating.rating = rating;
   };
 
   static get = (id) => {
