@@ -1,0 +1,83 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "description": "API for E-commerce application",
+    "title": "E-commerce API"
+  },
+  "host": "localhost:3600",
+  // "securityDefinitions":{
+  //   "JWT":{
+  //     "in": "header",
+  //     "name": "Authorization",
+  //     "type":"apiKey"
+  //   } 
+  // },
+  "paths": {
+    "/api/users/register": {
+      "post": {
+        "summary": "Registration",
+        "description": "User registration",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User Details",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User created successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server side error"
+          }
+        }
+      }
+    },
+    "/api/products/": {
+      "get": {
+        "summary": "Get all products",
+        "description": "Get Products",
+        "security": [{ "JWT": {} }],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Server side error"
+          }
+        }
+      }
+    }
+  }
+}
