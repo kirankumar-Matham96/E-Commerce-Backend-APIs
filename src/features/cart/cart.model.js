@@ -38,14 +38,41 @@ class CartModel {
     return newProduct;
   };
 
-  static remove = (cartItemId) => {
+  static remove = (cartItemId, userId) => {
     const foundCartItemIndex = cartItems.findIndex(
-      (item) => item.id === cartItemId
+      (item) => item.id === cartItemId && item.userId === userId
     );
     if (foundCartItemIndex == -1) {
       return "Product not found";
     }
     cartItems.splice(foundCartItemIndex, 1);
+  };
+
+  static getById = (cartItemId) => {
+    return cartItems.find((item) => item.id === cartItemId);
+  };
+
+  static increaseQuantity = (cartItemId) => {
+    const itemFound = this.getById(cartItemId);
+    if (itemFound) {
+      itemFound.quantity++;
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  static decreaseQuantity = (cartItemId) => {
+    const itemFound = this.getById(cartItemId);
+    if (itemFound) {
+      itemFound.quantity--;
+      if (itemFound.quantity == 0) {
+        this.remove(cartItemId);
+      }
+      return true;
+    } else {
+      return false;
+    }
   };
 }
 
