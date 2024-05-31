@@ -36,11 +36,13 @@ class UserController {
           expiresIn: "1h",
         }
       );
+
       // storing the token in cookies
-      res.cookie("jwtToken", jwtToken, {
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60,
-      });
+      // res.cookie("jwtToken", jwtToken, {
+      //   httpOnly: true,
+      //   maxAge: 1000 * 60 * 60,
+      // });
+
       return res.status(200).json({
         status: "success",
         message: "login success!",
@@ -54,7 +56,7 @@ class UserController {
 
   userSignOut = (req, res) => {
     // clearing the cookies
-    res.clearCookie("jwtToken");
+    // res.clearCookie("jwtToken");
     res.status(200).json({ status: "success", msg: "Logged out!" });
   };
 }

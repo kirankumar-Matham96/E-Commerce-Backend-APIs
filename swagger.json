@@ -6,16 +6,17 @@
     "title": "E-commerce API"
   },
   "host": "localhost:3600",
-  // "securityDefinitions":{
-  //   "JWT":{
-  //     "in": "header",
-  //     "name": "Authorization",
-  //     "type":"apiKey"
-  //   } 
-  // },
+  "securityDefinitions": {
+    "JWT": {
+      "in": "header",
+      "name": "Authorization",
+      "type": "apiKey"
+    }
+  },
   "paths": {
     "/api/users/register": {
       "post": {
+        "tags": ["Users"],
         "summary": "Registration",
         "description": "User registration",
         "parameters": [
@@ -61,8 +62,50 @@
         }
       }
     },
+
+    "/api/users/login": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Login",
+        "description": "Login to get token",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User Credentials",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server side error"
+          }
+        }
+      }
+    },
+
     "/api/products/": {
       "get": {
+        "tags": ["Products"],
         "summary": "Get all products",
         "description": "Get Products",
         "security": [{ "JWT": {} }],

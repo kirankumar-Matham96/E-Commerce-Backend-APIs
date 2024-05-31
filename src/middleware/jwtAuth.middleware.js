@@ -3,7 +3,11 @@ import "dotenv/config";
 
 export const jwtAuth = (req, res, next) => {
   // read token from cookies
-  const token = req.cookies.jwtToken;
+  // const token = req.cookies.jwtToken;
+
+  // read token from request headers
+  const token = req.headers["authorization"];
+
   // if no token return the error
   if (!token) {
     return res
