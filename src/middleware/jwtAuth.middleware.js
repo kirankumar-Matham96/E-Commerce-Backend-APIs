@@ -14,6 +14,7 @@ export const jwtAuth = (req, res, next) => {
   // if token is present, we need to check if it is valid
   try {
     const payload = jwt.verify(token, process.env.SECRET_KEY);
+    req.userId = payload.id;
   } catch (error) {
     return res
       .status(401)
