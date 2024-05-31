@@ -38,6 +38,7 @@ class UserController {
       );
       // storing the token in cookies
       res.cookie("jwtToken", jwtToken, {
+        httpOnly: true,
         maxAge: 1000 * 60 * 60,
       });
       return res.status(200).json({

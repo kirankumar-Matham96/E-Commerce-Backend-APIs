@@ -5,9 +5,8 @@ const router = express.Router();
 
 const cartController = new CartController();
 
-router.get("/", cartController);
-router.post("/", cartController);
-router.put("/:id", cartController);
-router.delete("/:id", cartController);
+router.get("/", cartController.getCartItems);
+router.post("/:id", cartController.addItemToCart);
+router.delete("/:id", cartController.removeItemFromCart);
 
 export default router;
