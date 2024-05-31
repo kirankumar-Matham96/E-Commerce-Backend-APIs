@@ -1,13 +1,13 @@
-// import express from "express";
-// import CartController from "./cart.controller.js";
+import express from "express";
+import CartController from "./cart.controller.js";
 
-// const router = express.Router();
+const router = express.Router();
 
-// const cartController = new CartController();
+const cartController = new CartController();
 
-// router.get("/", cartController);
-// router.post("/", cartController);
-// router.put("/:id", cartController);
-// router.delete("/:id", cartController);
+router.get("/", cartController);
+router.post("/", cartController);
+router.put("/:id", cartController);
+router.delete("/:id", cartController);
 
-// export default router;
+export default router;
