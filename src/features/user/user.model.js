@@ -20,14 +20,14 @@ const users = [
     name: "Buyer 1",
     email: "buyer1@gmail.com",
     password: "Buyer_1",
-    type: "buyer",
+    type: "customer",
   },
   {
     id: "4",
     name: "Buyer 2",
     email: "buyer2@gmail.com",
     password: "Buyer_2",
-    type: "buyer",
+    type: "customer",
   },
 ];
 

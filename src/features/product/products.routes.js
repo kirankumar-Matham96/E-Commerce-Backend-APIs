@@ -4,7 +4,7 @@ import ProductController from "./product.controller.js";
 import uploadFile from "../../middleware/multer.middleware.js";
 
 // initialize express router
-export const router = express.Router();
+const router = express.Router();
 
 const productController = new ProductController();
 
@@ -24,3 +24,5 @@ router.put("/:id/rate", productController.rateProduct);
 router.get("*", (req, res) => {
   res.status(404).send("Page/Product not found!");
 });
+
+export default router;

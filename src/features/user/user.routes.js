@@ -2,7 +2,7 @@ import express from "express";
 import UserController from "./user.controller.js";
 import ValidateUser from "../../middleware/userValidation.middleware.js";
 
-export const router = express.Router();
+const router = express.Router();
 
 const userController = new UserController();
 const validateUser = new ValidateUser();
@@ -23,3 +23,5 @@ router.post(
 );
 router.get("/:id", userController.getUserById);
 // router.put("/", userController.updateUser);
+
+export default router;
