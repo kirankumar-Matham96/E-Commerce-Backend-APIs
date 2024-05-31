@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 
-const products = [];
+const cartItems = [];
 
 class CartModel {
   constructor(userId, productId, quantity) {
@@ -11,7 +11,7 @@ class CartModel {
   }
 
   static get = (userId) => {
-    const userCartItems = products.filter((item) => item.userId === userId);
+    const userCartItems = cartItems.filter((item) => item.userId === userId);
     return userCartItems;
   };
 
@@ -34,18 +34,18 @@ class CartModel {
     }
 
     const newProduct = new CartModel(userId, productId, quantity);
-    products.push(newProduct);
+    cartItems.push(newProduct);
     return newProduct;
   };
 
-  static remove = (productId) => {
-    const foundProductIndex = products.findIndex(
-      (item) => item.productId === productId
+  static remove = (cartItemId) => {
+    const foundCartItemIndex = cartItems.findIndex(
+      (item) => item.id === cartItemId
     );
-    if (foundProductIndex == -1) {
+    if (foundCartItemIndex == -1) {
       return "Product not found";
     }
-    products.splice(foundProductIndex, 1);
+    cartItems.splice(foundCartItemIndex, 1);
   };
 }
 

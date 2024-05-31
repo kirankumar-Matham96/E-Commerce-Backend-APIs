@@ -5,7 +5,7 @@ class CartController {
     const cartItems = CartModel.get(req.userId);
     res.status(200).json({ status: "success", cartItems: cartItems });
   };
-  
+
   addItemToCart = (req, res) => {
     const { id } = req.params;
     const { quantity } = req.query;
@@ -21,7 +21,7 @@ class CartController {
 
   removeItemFromCart = (req, res) => {
     const { id } = req.params;
-    const error = CartModel.remove(req.userId, id);
+    const error = CartModel.remove(id);
     if (error) {
       return res.status(400).json({ status: "failure", error });
     }
