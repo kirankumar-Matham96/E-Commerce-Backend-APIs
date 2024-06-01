@@ -1,0 +1,6 @@
+{"level":"error","message":"Req URL: /api/users/login - Error: Error: user not found","service":"Request - logging"}
+{"level":"error","message":"Req URL: /api/users/login - Error: Error: user not found","service":"Error - logging"}
+{"level":"error","message":"Req URL: /api/users/login - Error: Error: user not found","service":"Error - logging"}
+{"level":"error","message":"Req URL: /api/users/login - Error: Error: user not found","service":"Error - logging"}
+{"level":"error","message":"Req URL: /api/users/login - Error: Error: user not found","service":"Error - logging"}
+{"level":"error","message":"Sun Jun 02 2024 01:19:45 GMT+0530 (India Standard Time) - Req URL: /api/users/login - Error: Error: user not found","service":"Error - logging"}

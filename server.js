@@ -10,7 +10,10 @@ import UserRouter from "./src/features/user/user.routes.js";
 import CartRouter from "./src/features/cart/cart.routes.js";
 // import basicAuthorizer from "./src/middleware/basicAuth.middleware.js";
 import { jwtAuth } from "./src/middleware/jwtAuth.middleware.js";
-import { loggerMiddleware } from "./src/middleware/logger.middleware.js";
+import {
+  loggerMiddleware,
+  errorLoggerMiddleware,
+} from "./src/middleware/logger.middleware.js";
 
 // reading swagger config file
 const swaggerFilePath = path.join(path.resolve(), "swagger.json");
@@ -47,7 +50,16 @@ app.use("/api/cart", jwtAuth, CartRouter);
 // for user requests related to register and login
 app.use("/api/users", UserRouter);
 
-// error handling middleware
+// unhandled error handling middleware
+app.use((err, req, res, next) => {
+  if (err) {
+    console.log(err);
+    errorLoggerMiddleware(err, req, res, next);
+    res.status(503).send("Something went wrong, please try again later");
+  }
+});
+
+// middleware to handle 404 requests
 app.use((req, res) => {
   res
     .status(404)
