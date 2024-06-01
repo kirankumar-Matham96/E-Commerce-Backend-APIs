@@ -52,36 +52,37 @@ export default class ProductController {
   };
 
   rateProduct = (req, res) => {
-    const { id } = req.params;
-    const { userId, rating } = req.query;
-    const response = ProductModel.rate(userId, id, rating);
-    if (response === "Product not found") {
-      return res
-        .status(401)
-        .json({ status: "failure", error: "Product not found" });
+    try {
+      const { id } = req.params;
+      const { userId, rating } = req.query;
+      ProductModel.rate(userId, id, rating);
+      res.status(200).send({ message: "Rating added successfully!" });
+    } catch (error) {
+      res.status(401).json({ status: "failure", error: error.message });
     }
-
-    res.status(200).send({ message: "Rating added successfully!" });
   };
 
   getOneProduct = (req, res) => {
-    const { id } = req.params;
-    const product = ProductModel.get(id);
-    if (product) {
-      return res
-        .status(200)
-        .send({
-          status: "success",
-          message: "Retrieved the product!",
-          product,
-        });
+    try {
+      const { id } = req.params;
+      const product = ProductModel.get(id);
+      res.status(200).send({
+        status: "success",
+        message: "Retrieved the product!",
+        product,
+      });
+    } catch (error) {
+      res.status(404).send({ status: "failure", error: error.message });
     }
-    return res.status(404).send({ message: "Product not found!" });
   };
 
   filterProducts = (req, res) => {
-    const { minPrice, maxPrice, category } = req.query;
-    const filteredProducts = ProductModel.filter(minPrice, maxPrice, category);
-    res.status(200).send({ products: filteredProducts });
+    try {
+      const { minPrice, maxPrice, category } = req.query;
+      const filteredProducts = ProductModel.filter(minPrice, maxPrice, category);
+      res.status(200).send({ products: filteredProducts });
+    } catch (error) {
+      res.status(200).send({ status: "failure", error: error.message }); 
+    }
   };
 }

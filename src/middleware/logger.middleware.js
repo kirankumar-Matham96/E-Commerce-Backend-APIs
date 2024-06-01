@@ -4,7 +4,7 @@ const logger = winston.createLogger({
   level: "info",
   format: winston.format.json(),
   defaultMeta: { service: "Request - logging" },
-  transports: [new winston.transports.File({ filename: "logs.txt" })],
+  transports: [new winston.transports.File({ filename: "logs.log" })],
 });
 
 export const loggerMiddleware = async (req, res, next) => {

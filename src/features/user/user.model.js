@@ -39,20 +39,27 @@ class UserModel {
     this.password = password;
     this.type = type;
   }
+
   static getAll() {
     return users;
   }
+
   static get(id) {
     const foundUser = users.find((user) => user.id === id);
+    if (!foundUser) {
+      throw new Error("user not found");
+    }
     return foundUser;
   }
+
   static create(data) {
     const { name, email, password, type } = data;
     const newUser = new UserModel(name, email, password, type);
     users.push(newUser);
   }
+
   static update(id, data) {
-    const index = users.find((user) => user.id === id);
+    const index = users.findIndex((user) => user.id === id);
 
     if (users[index]) {
       users[index].name = data.name;
@@ -60,11 +67,21 @@ class UserModel {
       users[index].password = data.password;
       users[index].type = data.type;
     }
+
+    if (index == -1) {
+      throw new Error("user not found");
+    }
   }
 
   static login(data) {
-    const { email } = data;
+    const { email, password } = data;
     const userFound = users.find((user) => user.email === email);
+    if (!userFound) {
+      throw new Error("user not found");
+    } else if (userFound.password !== password) {
+      throw new Error("invalid credentials");
+    }
+
     return userFound;
   }
 }

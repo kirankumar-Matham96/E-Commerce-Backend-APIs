@@ -1,6 +1,7 @@
 import UserModel from "./user.model.js";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
+import e from "express";
 
 class UserController {
   getAllUsers = (req, res) => {
@@ -9,13 +10,13 @@ class UserController {
   };
 
   getUserById = (req, res) => {
-    const { id } = req.params;
-    const user = UserModel.get(id);
-    if (user) {
+    try {
+      const { id } = req.params;
+      const user = UserModel.get(id);
       return res.status(200).json({ status: "success", user });
+    } catch (error) {
+      return res.status(404).send({ status: "failure", error: error.message });
     }
-
-    return res.status(404).send({ status: "failure", error: "User not found" });
   };
 
   userSignup = (req, res) => {
@@ -26,8 +27,9 @@ class UserController {
   };
 
   userSignIn = (req, res) => {
-    const userFound = UserModel.login(req.body);
-    if (userFound && userFound.password === req.body.password) {
+    try {
+      const userFound = UserModel.login(req.body);
+
       // creating jwt
       const jwtToken = jwt.sign(
         { id: userFound.id, email: userFound.email },
@@ -37,26 +39,18 @@ class UserController {
         }
       );
 
-      // storing the token in cookies
-      // res.cookie("jwtToken", jwtToken, {
-      //   httpOnly: true,
-      //   maxAge: 1000 * 60 * 60,
-      // });
-
       return res.status(200).json({
         status: "success",
         message: "login success!",
         token: jwtToken,
       });
+    } catch (error) {
+      return res.status(401).json({ status: "failure", error: error.message });
     }
-    return res
-      .status(401)
-      .json({ status: "failure", error: "Invalid credentials" });
   };
 
   userSignOut = (req, res) => {
-    // clearing the cookies
-    // res.clearCookie("jwtToken");
+    // TODO: Need to handle jwt token on sign out
     res.status(200).json({ status: "success", msg: "Logged out!" });
   };
 }

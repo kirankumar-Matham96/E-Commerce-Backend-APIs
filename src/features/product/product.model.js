@@ -99,23 +99,41 @@ class ProductModel {
   };
 
   static rate = (userId, productId, rating) => {
-    const productFound = products.find((p) => p.id === productId);
-    if (!productFound) {
-      return "Product not found";
+    if (!userId) {
+      throw new Error("user id not provided");
     }
 
-    // adding rating for the first time
-    productFound.rating.push({ userId, rating });
+    if (!productId) {
+      throw new Error("product id not provided");
+    }
+
+    if (!rating) {
+      throw new Error("rating not provided");
+    }
+
+    const productFound = products.find((p) => p.id === productId);
+    if (!productFound) {
+      throw new Error("Product not found");
+    }
 
     // if the user rated the product already and now want to update/modify rating
     const foundRating = productFound.rating.find(
       (rating) => rating.userId === userId
     );
-    foundRating.rating = rating;
+    if (foundRating) {
+      // updating the rating
+      foundRating.rating = rating;
+    } else {
+      // adding rating for the first time
+      productFound.rating.push({ userId, rating });
+    }
   };
 
   static get = (id) => {
     const productFound = products.find((p) => p.id === id);
+    if (!productFound) {
+      throw new Error("product not found");
+    }
     return productFound;
   };
 
@@ -129,7 +147,9 @@ class ProductModel {
         return product;
       }
     });
-
+    if (!result) {
+      throw new Error("no products found with the applied filters");
+    }
     return result;
   };
 }
