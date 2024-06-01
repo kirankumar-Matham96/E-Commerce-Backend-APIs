@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import cookiesParser from "cookie-parser";
 import swagger from "swagger-ui-express";
+import cors from "cors";
 
 import ProductRouter from "./src/features/product/products.routes.js";
 import UserRouter from "./src/features/user/user.routes.js";
@@ -16,6 +17,19 @@ const apiDocs = JSON.parse(fs.readFileSync(swaggerFilePath, "utf8"));
 
 const PORT = 3600;
 const app = express();
+
+// cors policy config
+app.use(cors());
+// app.use((req, res, next) => {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header("Access-Control-Allow-Headers", "*");
+//   res.header("Access-Control-Allow-Methods", "*");
+//   // return ok for preflight request
+//   if(req.method ==="OPTIONS"){
+//     return res.sendStatus(200);
+//   }
+//   next();
+// });
 
 app.get("/", (req, res) => {
   console.log("Welcome to E-Commerce API");
@@ -38,6 +52,13 @@ app.use("/api/cart", jwtAuth, CartRouter);
 
 // for user requests related to register and login
 app.use("/api/users", UserRouter);
+
+// error handling middleware
+app.use((req, res) => {
+  res
+    .status(404)
+    .send("API Not Found. Please look our API Documentation at /api-docs");
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running at: http://localhost:${PORT}`);

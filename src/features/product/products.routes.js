@@ -22,7 +22,7 @@ router.post("/add-with-image-url", productController.addProductWithImageUrl);
 router.put("/:id/rate", productController.rateProduct);
 
 router.get("*", (req, res) => {
-  res.status(404).send("Page/Product not found!");
+  res.status(404).send("API Not Found");
 });
 
 export default router;
