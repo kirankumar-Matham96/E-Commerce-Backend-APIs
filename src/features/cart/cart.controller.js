@@ -1,4 +1,5 @@
 import CartModel from "./cart.model.js";
+import {ApplicationError} from "../../errorHandler/applicationError.js";
 
 class CartController {
   getCartItems = (req, res) => {
@@ -12,15 +13,15 @@ class CartController {
       const { quantity } = req.query;
 
       if (!id) {
-        throw new Error("product id is required");
+        throw new ApplicationError("product id is required", 400);
       }
 
       if (!quantity) {
-        throw new Error("quantity is required");
+        throw new ApplicationError("quantity is required", 400);
       }
 
       if (quantity <= 0 || !Number.isInteger(Number(quantity))) {
-        throw new Error("quantity should be positive integer");
+        throw new ApplicationError("quantity should be positive integer", 400);
       }
 
       const cartItem = CartModel.add(req.userId, id, quantity);
@@ -36,7 +37,7 @@ class CartController {
       const { userId } = req.userId;
 
       if (!id) {
-        throw new Error("item id required");
+        throw new ApplicationError("item id required", 400);
       }
 
       CartModel.remove(id, userId);
@@ -50,7 +51,7 @@ class CartController {
     try {
       const { id } = req.params;
       if (!id) {
-        throw new Error("item id required");
+        throw new ApplicationError("item id required", 400);
       }
 
       CartModel.increaseQuantity(id);
@@ -66,7 +67,7 @@ class CartController {
     try {
       const { id } = req.params;
       if (!id) {
-        throw new Error("item id required");
+        throw new ApplicationError("item id required", 400);
       }
 
       CartModel.decreaseQuantity(id);

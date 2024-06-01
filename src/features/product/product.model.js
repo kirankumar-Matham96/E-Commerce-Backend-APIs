@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
+import {ApplicationError} from "../../errorHandler/applicationError.js";
 
 const products = [
   {
@@ -100,20 +101,20 @@ class ProductModel {
 
   static rate = (userId, productId, rating) => {
     if (!userId) {
-      throw new Error("user id not provided");
+      throw new ApplicationError("user id not provided", 400);
     }
 
     if (!productId) {
-      throw new Error("product id not provided");
+      throw new ApplicationError("product id not provided", 400);
     }
 
     if (!rating) {
-      throw new Error("rating not provided");
+      throw new ApplicationError("rating not provided", 400);
     }
 
     const productFound = products.find((p) => p.id === productId);
     if (!productFound) {
-      throw new Error("Product not found");
+      throw new ApplicationError("Product not found",404);
     }
 
     // if the user rated the product already and now want to update/modify rating
@@ -132,7 +133,7 @@ class ProductModel {
   static get = (id) => {
     const productFound = products.find((p) => p.id === id);
     if (!productFound) {
-      throw new Error("product not found");
+      throw new ApplicationError("product not found", 404);
     }
     return productFound;
   };
@@ -147,9 +148,6 @@ class ProductModel {
         return product;
       }
     });
-    if (!result) {
-      throw new Error("no products found with the applied filters");
-    }
     return result;
   };
 }

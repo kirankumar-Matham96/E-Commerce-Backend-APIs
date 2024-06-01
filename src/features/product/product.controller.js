@@ -2,53 +2,73 @@ import ProductModel from "./product.model.js";
 
 export default class ProductController {
   getAllProducts = (req, res) => {
-    const products = ProductModel.getAll();
-    res.status(200).send({ message: "Retrieved all the products!", products });
+    try {
+      const products = ProductModel.getAll();
+      res
+        .status(200)
+        .send({ message: "Retrieved all the products!", products });
+    } catch (error) {
+      console.log(error);
+      // passing the error to error handling middleware
+      next(error);
+    }
   };
 
   addProductWithImageUrl = (req, res) => {
-    const {
-      name,
-      description,
-      quantity,
-      imageUrl,
-      category,
-      price,
-      sizes,
-      rating,
-    } = req.body;
+    try {
+      const {
+        name,
+        description,
+        quantity,
+        imageUrl,
+        category,
+        price,
+        sizes,
+        rating,
+      } = req.body;
 
-    const product = {
-      name: req.body.name,
-      description: req.body.description,
-      quantity: req.body.quantity,
-      imageUrl: req.body.imageUrl,
-      category: req.body.category,
-      price: req.body.price,
-      sizes: req.body.sizes.split(","),
-      rating: req.body.rating,
-    };
+      const product = {
+        name: req.body.name,
+        description: req.body.description,
+        quantity: req.body.quantity,
+        imageUrl: req.body.imageUrl,
+        category: req.body.category,
+        price: req.body.price,
+        sizes: req.body.sizes.split(","),
+        rating: req.body.rating,
+      };
 
-    ProductModel.add(product);
-    res.status(201).send({ message: "Product added successfully!" });
+      ProductModel.add(product);
+      res.status(201).send({ message: "Product added successfully!" });
+    } catch (error) {
+      console.log(error);
+      // passing the error to error handling middleware
+      next(error);
+    }
   };
 
   addProductWithImageFile = (req, res) => {
-    const { name, description, quantity, category, price, sizes, rating } =
-      req.body;
+    try {
+      const { name, description, quantity, category, price, sizes, rating } =
+        req.body;
 
-    const product = {
-      name: req.body.name,
-      description: req.body.description,
-      quantity: req.body.quantity,
-      imageUrl: req.file.filename,
-      category: req.body.category,
-      price: req.body.price,
-      sizes: req.body.sizes.split(","),
-      rating: req.body.rating,
-    };
-    ProductModel.add(product);
-    res.status(201).send({ message: "Product added successfully!" });
+      const product = {
+        name: req.body.name,
+        description: req.body.description,
+        quantity: req.body.quantity,
+        imageUrl: req.file.filename,
+        category: req.body.category,
+        price: req.body.price,
+        sizes: req.body.sizes.split(","),
+        rating: req.body.rating,
+      };
+      ProductModel.add(product);
+      res.status(201).send({ message: "Product added successfully!" });
+    } catch (error) {
+      console.log(error);
+      // passing the error to error handling middleware
+      next(error);
+    }
   };
 
   rateProduct = (req, res) => {
@@ -79,10 +99,16 @@ export default class ProductController {
   filterProducts = (req, res) => {
     try {
       const { minPrice, maxPrice, category } = req.query;
-      const filteredProducts = ProductModel.filter(minPrice, maxPrice, category);
+      const filteredProducts = ProductModel.filter(
+        minPrice,
+        maxPrice,
+        category
+      );
       res.status(200).send({ products: filteredProducts });
     } catch (error) {
-      res.status(200).send({ status: "failure", error: error.message }); 
+      console.log(error);
+      // passing the error to error handling middleware
+      next(error);
     }
   };
 }

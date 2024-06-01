@@ -1,4 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
+import {ApplicationError} from "../../errorHandler/applicationError.js";
+
 
 const cartItems = [];
 
@@ -43,7 +45,7 @@ class CartModel {
 
   static remove = (cartItemId, userId) => {
     if (!cartItemId) {
-      throw new Error("item id is required");
+      throw new ApplicationError("item id is required",400);
     }
 
     const foundCartItemIndex = cartItems.findIndex(
@@ -51,7 +53,7 @@ class CartModel {
     );
 
     if (foundCartItemIndex == -1) {
-      throw new Error("Product not found");
+      throw new ApplicationError("Product not found",404);
     }
 
     cartItems.splice(foundCartItemIndex, 1);
@@ -59,33 +61,33 @@ class CartModel {
 
   static getById = (cartItemId) => {
     if (!cartItemId) {
-      throw new Error("item id required");
+      throw new ApplicationError("item id required",400);
     }
     const itemFound = cartItems.find((item) => item.id === cartItemId);
     if (!itemFound) {
-      throw new Error("item not found");
+      throw new ApplicationError("item not found", 404);
     }
     return itemFound;
   };
 
   static increaseQuantity = (cartItemId) => {
     if (!cartItemId) {
-      throw new Error("item id required");
+      throw new ApplicationError("item id required", 400);
     }
     const itemFound = this.getById(cartItemId);
     if (!itemFound) {
-      throw new Error("item not found");
+      throw new ApplicationError("item not found", 404);
     }
     itemFound.quantity++;
   };
 
   static decreaseQuantity = (cartItemId) => {
     if (!cartItemId) {
-      throw new Error("item id required");
+      throw new ApplicationError("item id required", 400);
     }
     const itemFound = this.getById(cartItemId);
     if (!itemFound) {
-      throw new Error("item not found");
+      throw new ApplicationError("item not found", 404);
     }
     itemFound.quantity--;
   };

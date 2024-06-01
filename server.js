@@ -14,6 +14,7 @@ import {
   loggerMiddleware,
   errorLoggerMiddleware,
 } from "./src/middleware/logger.middleware.js";
+import { ApplicationError } from "./src/errorHandler/applicationError.js";
 
 // reading swagger config file
 const swaggerFilePath = path.join(path.resolve(), "swagger.json");
@@ -52,11 +53,12 @@ app.use("/api/users", UserRouter);
 
 // unhandled error handling middleware
 app.use((err, req, res, next) => {
-  if (err) {
-    console.log(err);
-    errorLoggerMiddleware(err, req, res, next);
-    res.status(503).send("Something went wrong, please try again later");
+  console.log(err);
+  if (err instanceof ApplicationError) {
+    return res.status(err.code).send(err.message);
   }
+  errorLoggerMiddleware(err, req, res, next);
+  res.status(500).send("Something went wrong, please try again later");
 });
 
 // middleware to handle 404 requests

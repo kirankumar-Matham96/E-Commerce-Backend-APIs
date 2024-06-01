@@ -1,12 +1,17 @@
 import UserModel from "./user.model.js";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
-import e from "express";
 
 class UserController {
   getAllUsers = (req, res) => {
-    const users = UserModel.getAll();
-    res.status(200).json({ status: "success", users });
+    try {
+      const users = UserModel.getAll();
+      res.status(200).json({ status: "success", users });
+    } catch (error) {
+      console.log(error);
+      // passing the error to error handling middleware
+      next(error);
+    }
   };
 
   getUserById = (req, res) => {
@@ -20,15 +25,22 @@ class UserController {
   };
 
   userSignup = (req, res) => {
-    UserModel.create(req.body);
-    res
-      .status(201)
-      .json({ status: "success", message: "User created successfully" });
+    try {
+      UserModel.create(req.body);
+      res
+        .status(201)
+        .json({ status: "success", message: "User created successfully" });
+    } catch (error) {
+      console.log(error);
+      // passing the error to error handling middleware
+      next(error);
+    }
   };
 
   userSignIn = (req, res) => {
     try {
-      const userFound = UserModel.login(req.body);
+      const reqBody = req.body;
+      const userFound = UserModel.login(reqBody);
 
       // creating jwt
       const jwtToken = jwt.sign(

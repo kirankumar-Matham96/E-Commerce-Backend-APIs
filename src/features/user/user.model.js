@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
+import {ApplicationError} from "../../errorHandler/applicationError.js";
 
 const users = [
   {
@@ -47,7 +48,7 @@ class UserModel {
   static get(id) {
     const foundUser = users.find((user) => user.id === id);
     if (!foundUser) {
-      throw new Error("user not found");
+      throw new ApplicationError("user not found", 404);
     }
     return foundUser;
   }
@@ -69,7 +70,7 @@ class UserModel {
     }
 
     if (index == -1) {
-      throw new Error("user not found");
+      throw new ApplicationError("user not found", 404);
     }
   }
 
@@ -77,9 +78,9 @@ class UserModel {
     const { email, password } = data;
     const userFound = users.find((user) => user.email === email);
     if (!userFound) {
-      throw new Error("user not found");
+      throw new ApplicationError("user not found", 404);
     } else if (userFound.password !== password) {
-      throw new Error("invalid credentials");
+      throw new ApplicationError("invalid credentials", 403);
     }
 
     return userFound;

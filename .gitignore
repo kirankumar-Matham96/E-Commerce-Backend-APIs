@@ -5,3 +5,5 @@
 /src/uploads/*
 
 /.env
+
+/logs.log
