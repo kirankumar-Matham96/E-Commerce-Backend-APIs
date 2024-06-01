@@ -10,11 +10,9 @@ import UserRouter from "./src/features/user/user.routes.js";
 import CartRouter from "./src/features/cart/cart.routes.js";
 // import basicAuthorizer from "./src/middleware/basicAuth.middleware.js";
 import { jwtAuth } from "./src/middleware/jwtAuth.middleware.js";
-import {
-  loggerMiddleware,
-  errorLoggerMiddleware,
-} from "./src/middleware/logger.middleware.js";
-import { ApplicationError } from "./src/errorHandler/applicationError.js";
+import { errorHandlerMiddleware } from "./src/middleware/customErrorHandling.middleware.js";
+import { loggerMiddleware } from "./src/middleware/logger.middleware.js";
+import { invalidRoutesMiddleware } from "./src/middleware/invalidRoutes.middleware.js";
 
 // reading swagger config file
 const swaggerFilePath = path.join(path.resolve(), "swagger.json");
@@ -51,22 +49,11 @@ app.use("/api/cart", jwtAuth, CartRouter);
 // for user requests related to register and login
 app.use("/api/users", UserRouter);
 
-// unhandled error handling middleware
-app.use((err, req, res, next) => {
-  console.log(err);
-  if (err instanceof ApplicationError) {
-    return res.status(err.code).send(err.message);
-  }
-  errorLoggerMiddleware(err, req, res, next);
-  res.status(500).send("Something went wrong, please try again later");
-});
+// custom error handling middleware
+app.use(errorHandlerMiddleware);
 
 // middleware to handle 404 requests
-app.use((req, res) => {
-  res
-    .status(404)
-    .send("API Not Found. Please look our API Documentation at /api-docs");
-});
+app.use(invalidRoutesMiddleware);
 
 app.listen(PORT, () => {
   console.log(`Server is running at: http://localhost:${PORT}`);

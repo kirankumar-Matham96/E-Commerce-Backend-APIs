@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import {ApplicationError} from "../../errorHandler/applicationError.js";
+import { ApplicationError } from "../../errorHandler/applicationError.js";
 
 const users = [
   {
