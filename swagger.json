@@ -1,16 +1,22 @@
 {
-  "swagger": "2.0",
+  "openapi": "3.0.0",
   "info": {
     "version": "1.0.0",
     "description": "API for E-commerce application",
     "title": "E-commerce API"
   },
-  "host": "localhost:3600",
-  "securityDefinitions": {
-    "JWT": {
-      "in": "header",
-      "name": "Authorization",
-      "type": "apiKey"
+  "servers": [
+    {
+      "url": "http://localhost:3600"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "JWT": {
+        "in": "header",
+        "name": "Authorization",
+        "type": "apiKey"
+      }
     }
   },
   "paths": {
@@ -19,30 +25,30 @@
         "tags": ["Users"],
         "summary": "Registration",
         "description": "User registration",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "User Details",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "email": {
-                  "type": "string"
-                },
-                "password": {
-                  "type": "string"
-                },
-                "type": {
-                  "type": "string"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "description": "User Details",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  }
                 }
               }
             }
           }
-        ],
+        },
         "responses": {
           "201": {
             "description": "User created successfully"
@@ -68,24 +74,24 @@
         "tags": ["Users"],
         "summary": "Login",
         "description": "Login to get token",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "User Credentials",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "email": {
-                  "type": "string"
-                },
-                "password": {
-                  "type": "string"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "description": "User Credentials",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
                 }
               }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -108,13 +114,199 @@
         "tags": ["Products"],
         "summary": "Get all products",
         "description": "Get Products",
-        "security": [{ "JWT": {} }],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
           },
           "401": {
             "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Server side error"
+          }
+        }
+      }
+    },
+
+    "/api/products/{id}": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Get product by id",
+        "description": "Get Product by Id",
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the product to retrieve",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server side error"
+          }
+        }
+      }
+    },
+
+    "/api/products/add-with-image-url": {
+      "post": {
+        "tags": ["Products"],
+        "summary": "Add a product",
+        "description": "Add a product",
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "requestBody": {
+          "description": "Product Details",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the product",
+                    "example": "Sample Product"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Description of the product",
+                    "example": "This is a sample product description."
+                  },
+                  "quantity": {
+                    "type": "number",
+                    "description": "Quantity of the product",
+                    "example": 10
+                  },
+                  "imageUrl": {
+                    "type": "string",
+                    "format": "url",
+                    "description": "URL of the product image",
+                    "example": "http://example.com/image.jpg"
+                  },
+                  "category": {
+                    "type": "string",
+                    "description": "Category of the product",
+                    "example": "Electronics"
+                  },
+                  "price": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "Price of the product",
+                    "example": 29.99
+                  },
+                  "sizes": {
+                    "type": "string",
+                    "description": "Available sizes of the product",
+                    "example": "S, M, L, XL"
+                  },
+                  "rating": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "Rating of the product",
+                    "example": 4.5
+                  }
+                },
+                "required": ["name", "description", "quantity", "price"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server side error"
+          }
+        }
+      }
+    },
+
+    "/api/products/{id}/rate": {
+      "put": {
+        "tags": ["Products"],
+        "summary": "Add rating to a product",
+        "description": "Add rating to a product",
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the product to rate",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Rating Details",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "rating": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "Rating value",
+                    "example": 4.5,
+                    "minimum": 0,
+                    "maximum": 5
+                  }
+                },
+                "required": ["rating"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not found"
           },
           "500": {
             "description": "Server side error"

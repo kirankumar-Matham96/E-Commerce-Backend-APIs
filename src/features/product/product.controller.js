@@ -70,7 +70,11 @@ export default class ProductController {
     if (product) {
       return res
         .status(200)
-        .send({ message: "Retrieved all the products!", product });
+        .send({
+          status: "success",
+          message: "Retrieved the product!",
+          product,
+        });
     }
     return res.status(404).send({ message: "Product not found!" });
   };
