@@ -21,16 +21,6 @@ const app = express();
 
 // cors policy config
 app.use(cors());
-// app.use((req, res, next) => {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Headers", "*");
-//   res.header("Access-Control-Allow-Methods", "*");
-//   // return ok for preflight request
-//   if(req.method ==="OPTIONS"){
-//     return res.sendStatus(200);
-//   }
-//   next();
-// });
 
 // swagger-docs api
 app.use("/api-docs", swagger.serve, swagger.setup(apiDocs));

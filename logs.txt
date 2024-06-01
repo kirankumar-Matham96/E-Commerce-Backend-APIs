@@ -1,0 +1,5 @@
+{"level":"info","message":"/api/products - {}","service":"Request - logging"}
+{"level":"info","message":"/api/products?Athorization=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQiLCJlbWFpbCI6ImJ1eWVyMkBnbWFpbC5jb20iLCJpYXQiOjE3MTcyNjA3MDMsImV4cCI6MTcxNzI2NDMwM30.exTJIwr38zCNQNxC330djYxKtTeGSVMqbCmvXZv6blM - {}","service":"Request - logging"}
+{"level":"info","message":"/api/products?Authorization=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQiLCJlbWFpbCI6ImJ1eWVyMkBnbWFpbC5jb20iLCJpYXQiOjE3MTcyNjA3MDMsImV4cCI6MTcxNzI2NDMwM30.exTJIwr38zCNQNxC330djYxKtTeGSVMqbCmvXZv6blM - {}","service":"Request - logging"}
+{"level":"info","message":"/api/products?Authorization=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQiLCJlbWFpbCI6ImJ1eWVyMkBnbWFpbC5jb20iLCJpYXQiOjE3MTcyNjA3NTIsImV4cCI6MTcxNzI2NDM1Mn0.6Q5u_vMkRPHaSzskots2MW-UyD0i1JdJN8z_y2wQh_U - {}","service":"Request - logging"}
+{"level":"info","message":"/api/products - {}","service":"Request - logging"}
