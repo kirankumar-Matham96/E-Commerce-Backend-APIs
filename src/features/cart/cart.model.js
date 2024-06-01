@@ -17,62 +17,77 @@ class CartModel {
 
   static add = (userId, productId, quantity) => {
     const userItems = this.get(userId);
-    console.log({ userItems });
+
+    // if product exists in the user cart already
     if (userItems.length > 0) {
+      // checking if product available already
       const productFound = userItems.find((item) => {
         if (item.productId === productId) {
           return item;
         }
       });
-      console.log({ productFound });
 
-      if (productFound.productId === productId) {
+      // if product exists
+      if (productFound) {
         // increase quantity
-        productFound.quantity += parseInt(quantity);
+        item.quantity += parseInt(quantity);
         return productFound;
       }
     }
 
+    // if the product is not available in the user cart
     const newProduct = new CartModel(userId, productId, quantity);
     cartItems.push(newProduct);
     return newProduct;
   };
 
   static remove = (cartItemId, userId) => {
+    if (!cartItemId) {
+      throw new Error("item id is required");
+    }
+
     const foundCartItemIndex = cartItems.findIndex(
       (item) => item.id === cartItemId && item.userId === userId
     );
+
     if (foundCartItemIndex == -1) {
-      return "Product not found";
+      throw new Error("Product not found");
     }
+
     cartItems.splice(foundCartItemIndex, 1);
   };
 
   static getById = (cartItemId) => {
-    return cartItems.find((item) => item.id === cartItemId);
+    if (!cartItemId) {
+      throw new Error("item id required");
+    }
+    const itemFound = cartItems.find((item) => item.id === cartItemId);
+    if (!itemFound) {
+      throw new Error("item not found");
+    }
+    return itemFound;
   };
 
   static increaseQuantity = (cartItemId) => {
-    const itemFound = this.getById(cartItemId);
-    if (itemFound) {
-      itemFound.quantity++;
-      return true;
-    } else {
-      return false;
+    if (!cartItemId) {
+      throw new Error("item id required");
     }
+    const itemFound = this.getById(cartItemId);
+    if (!itemFound) {
+      throw new Error("item not found");
+    }
+    itemFound.quantity++;
   };
 
   static decreaseQuantity = (cartItemId) => {
-    const itemFound = this.getById(cartItemId);
-    if (itemFound) {
-      itemFound.quantity--;
-      if (itemFound.quantity == 0) {
-        this.remove(cartItemId);
-      }
-      return true;
-    } else {
-      return false;
+    if (!cartItemId) {
+      throw new Error("item id required");
     }
+    const itemFound = this.getById(cartItemId);
+    if (!itemFound) {
+      throw new Error("item not found");
+    }
+    itemFound.quantity--;
   };
 }
 
