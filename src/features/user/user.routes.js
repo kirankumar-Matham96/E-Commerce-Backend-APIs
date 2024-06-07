@@ -20,6 +20,9 @@ router.post(
   "/register",
   validateUser.validateUserSignUp,
   userController.userSignup
+  // (req, res) => {
+  //   userController.userSignup(req, res);
+  // }
 );
 router.get("/:id", userController.getUserById);
 // router.put("/", userController.updateUser);

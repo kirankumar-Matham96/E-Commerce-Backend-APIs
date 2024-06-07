@@ -52,25 +52,25 @@ class UserModel {
     return foundUser;
   }
 
-  static async create(data) {
-    try {
-      // get the data base
-      const db = getDB("e-com-db");
-      // get the collection
-      const usersCollection = db.collection("users");
+  // static async create(data) {
+  //   try {
+  //     // get the data base
+  //     const db = getDB("e-com-db");
+  //     // get the collection
+  //     const usersCollection = db.collection("users");
 
-      const { name, email, password, type } = data;
-      const newUser = new UserModel(name, email, password, type);
+  //     const { name, email, password, type } = data;
+  //     const newUser = new UserModel(name, email, password, type);
 
-      // insert the document
-      await usersCollection.insertOne(newUser);
-      return newUser;
+  //     // insert the document
+  //     await usersCollection.insertOne(newUser);
+  //     return newUser;
 
-      // users.push(newUser);
-    } catch (error) {
-      throw new ApplicationError("Something went wrong", 500);
-    }
-  }
+  //     // users.push(newUser);
+  //   } catch (error) {
+  //     throw new ApplicationError("Something went wrong", 500);
+  //   }
+  // }
 
   static update(id, data) {
     const index = users.findIndex((user) => user.id === id);
@@ -87,16 +87,16 @@ class UserModel {
     }
   }
 
-  static login(data) {
-    const { email, password } = data;
-    const userFound = users.find((user) => user.email === email);
-    if (!userFound) {
-      throw new ApplicationError("user not found", 404);
-    } else if (userFound.password !== password) {
-      throw new ApplicationError("invalid credentials", 403);
-    }
+  // static login(data) {
+  //   const { email, password } = data;
+  //   const userFound = users.find((user) => user.email === email);
+  //   if (!userFound) {
+  //     throw new ApplicationError("user not found", 404);
+  //   } else if (userFound.password !== password) {
+  //     throw new ApplicationError("invalid credentials", 403);
+  //   }
 
-    return userFound;
-  }
+  //   return userFound;
+  // }
 }
 export default UserModel;

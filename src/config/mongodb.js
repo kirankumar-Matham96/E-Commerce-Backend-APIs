@@ -1,8 +1,8 @@
-// imports
+// module imports
 import { MongoClient } from "mongodb";
 
 // setting the mongodb database url
-const url = "mongodb://localhost:27017";
+const url = process.env.DB_URL;
 
 let clientInstance;
 const connectToMongoDB = async () => {

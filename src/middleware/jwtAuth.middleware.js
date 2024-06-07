@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-import "dotenv/config";
 
 export const jwtAuth = (req, res, next) => {
   // read token from cookies
