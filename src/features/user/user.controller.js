@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import "dotenv/config";
 
 class UserController {
-  getAllUsers = (req, res) => {
+  getAllUsers = (req, res, next) => {
     try {
       const users = UserModel.getAll();
       res.status(200).json({ status: "success", users });
@@ -24,12 +24,16 @@ class UserController {
     }
   };
 
-  userSignup = (req, res) => {
+  userSignup = async (req, res, next) => {
     try {
-      UserModel.create(req.body);
+      const user = await UserModel.create(req.body);
       res
         .status(201)
-        .json({ status: "success", message: "User created successfully" });
+        .json({
+          status: "success",
+          message: "User created successfully",
+          user,
+        });
     } catch (error) {
       console.log(error);
       // passing the error to error handling middleware

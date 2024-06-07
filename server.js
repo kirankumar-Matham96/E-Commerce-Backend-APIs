@@ -13,6 +13,7 @@ import { jwtAuth } from "./src/middleware/jwtAuth.middleware.js";
 import { errorHandlerMiddleware } from "./src/middleware/customErrorHandling.middleware.js";
 import { loggerMiddleware } from "./src/middleware/logger.middleware.js";
 import { invalidRoutesMiddleware } from "./src/middleware/invalidRoutes.middleware.js";
+import connectToDB from "./src/config/mongodb.js";
 
 // reading swagger config file
 const swaggerFilePath = path.join(path.resolve(), "swagger.json");
@@ -57,4 +58,6 @@ app.use(invalidRoutesMiddleware);
 
 app.listen(PORT, () => {
   console.log(`Server is running at: http://localhost:${PORT}`);
+  // connecting to mongodb
+  connectToDB();
 });

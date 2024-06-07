@@ -1,5 +1,5 @@
-import { v4 as uuidv4 } from "uuid";
 import { ApplicationError } from "../../errorHandler/applicationError.js";
+import { getDB } from "../../config/mongodb.js";
 
 const users = [
   {
@@ -34,7 +34,6 @@ const users = [
 
 class UserModel {
   constructor(name, email, password, type) {
-    this.id = uuidv4();
     this.name = name;
     this.email = email;
     this.password = password;
@@ -53,10 +52,24 @@ class UserModel {
     return foundUser;
   }
 
-  static create(data) {
-    const { name, email, password, type } = data;
-    const newUser = new UserModel(name, email, password, type);
-    users.push(newUser);
+  static async create(data) {
+    try {
+      // get the data base
+      const db = getDB("e-com-db");
+      // get the collection
+      const usersCollection = db.collection("users");
+
+      const { name, email, password, type } = data;
+      const newUser = new UserModel(name, email, password, type);
+
+      // insert the document
+      await usersCollection.insertOne(newUser);
+      return newUser;
+
+      // users.push(newUser);
+    } catch (error) {
+      throw new ApplicationError("Something went wrong", 500);
+    }
   }
 
   static update(id, data) {
