@@ -122,10 +122,13 @@ export default class ProductController {
   filterProducts = async (req, res) => {
     try {
       const { minPrice, maxPrice, category } = req.query;
+
+      // converting string into array
+      const categories = JSON.parse(category.replace(/'/g, '"'));
       const filteredProducts = await this.productRepository.filter(
         minPrice,
         maxPrice,
-        category
+        categories
       );
       res.status(200).send({ products: filteredProducts });
     } catch (error) {

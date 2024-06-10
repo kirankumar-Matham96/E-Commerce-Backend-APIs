@@ -1,5 +1,5 @@
 import { getDB } from "../../config/mongodb.js";
-import { ObjectId } from "mongodb";
+import { ObjectId, ReturnDocument } from "mongodb";
 import { ApplicationError } from "../../errorHandler/applicationError.js";
 
 class CartRepository {
@@ -26,12 +26,16 @@ class CartRepository {
     try {
       const db = getDB("e-com-db");
       const cartCollection = db.collection(this.collection);
+
+      // get id
+      const id = await this.getNextCounter(db);
+
       await cartCollection.updateOne(
         {
           userId: ObjectId.createFromHexString(userId),
           productId: ObjectId.createFromHexString(productId),
         },
-        { $inc: { quantity: quantity } },
+        { $setOnInsert: { _id: id }, $inc: { quantity: quantity } },
         { upsert: true }
       );
     } catch (error) {
@@ -102,6 +106,18 @@ class CartRepository {
       console.log(error);
       throw new ApplicationError("Something went wrong", 500);
     }
+  };
+
+  getNextCounter = async (db) => {
+    const resultDocument = await db
+      .collection("counters")
+      .findOneAndUpdate(
+        { _id: "cartItemId" },
+        { $inc: { value: 1 } },
+        { ReturnDocument: "after" }
+      );
+    console.log({ resultDocument });
+    return resultDocument.value.value;
   };
 }
 

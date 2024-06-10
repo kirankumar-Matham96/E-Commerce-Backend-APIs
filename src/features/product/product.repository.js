@@ -73,9 +73,9 @@ class ProductRepository {
     }
   };
 
-  filter = async (minPrice, maxPrice, category) => {
+  filter = async (minPrice, maxPrice, categories) => {
     try {
-      const filterExpression = {};
+      let filterExpression = {};
 
       if (minPrice) {
         filterExpression.price = { $gte: parseFloat(minPrice) };
@@ -88,12 +88,18 @@ class ProductRepository {
         };
       }
 
-      if (category) {
-        filterExpression.category = category;
+      if (categories) {
+        filterExpression = {
+          // $and: [filterExpression, { category: { $in: [...categories] } }],
+          $or: [filterExpression, { category: { $in: [...categories] } }],
+        };
       }
       const db = getDB("e-com-db");
       const productsCollection = db.collection(this.collection);
-      const results = await productsCollection.find(filterExpression).toArray();
+      const results = await productsCollection
+        .find(filterExpression)
+        .project({ name: 1, price: 1, _id: 0 })
+        .toArray();
       return results;
     } catch (error) {
       console.log(error);
