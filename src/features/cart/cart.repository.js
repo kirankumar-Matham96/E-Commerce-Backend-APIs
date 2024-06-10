@@ -26,26 +26,14 @@ class CartRepository {
     try {
       const db = getDB("e-com-db");
       const cartCollection = db.collection(this.collection);
-
-      const item = {
-        userId: ObjectId.createFromHexString(userId),
-        productId: ObjectId.createFromHexString(productId),
-        quantity,
-      };
-
-      const itemFound = await cartCollection.findOne({
-        userId: ObjectId.createFromHexString(userId),
-        productId: ObjectId.createFromHexString(productId),
-      });
-
-      if (itemFound) {
-        // await cartCollection.updateOne({
-        //   userId: ObjectId.createFromHexString(userId),
-        //   productId: ObjectId.createFromHexString(productId),
-        // }, {$set:{}});
-      } else {
-        await cartCollection.insertOne(item);
-      }
+      await cartCollection.updateOne(
+        {
+          userId: ObjectId.createFromHexString(userId),
+          productId: ObjectId.createFromHexString(productId),
+        },
+        { $inc: { quantity: quantity } },
+        { upsert: true }
+      );
     } catch (error) {
       console.log(error);
       throw new ApplicationError("Something went wrong", 500);
@@ -89,7 +77,8 @@ class CartRepository {
         {
           _id: ObjectId.createFromHexString(cartItemId),
         },
-        { $set: { quantity: "++" } }
+        { $inc: { quantity: 1 } },
+        { upsert: true }
       );
     } catch (error) {
       console.log(error);
@@ -106,7 +95,8 @@ class CartRepository {
         {
           _id: ObjectId.createFromHexString(cartItemId),
         },
-        { $set: { quantity: "--" } }
+        { $inc: { quantity: -1 } },
+        { upsert: true }
       );
     } catch (error) {
       console.log(error);

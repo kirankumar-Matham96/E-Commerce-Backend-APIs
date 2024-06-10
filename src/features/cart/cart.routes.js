@@ -11,10 +11,10 @@ router.post("/", (req, res) => cartController.addItemToCart(req, res));
 router.delete("/:id", (req, res) =>
   cartController.removeItemFromCart(req, res)
 );
-router.put("/:id/increase", (req, res) =>
+router.put("/increase", (req, res) =>
   cartController.increaseCartItemQuantity(req, res)
 );
-router.put("/:id/decrease", (req, res) =>
+router.put("/decrease", (req, res) =>
   cartController.decreaseCartItemQuantity(req, res)
 );
 
