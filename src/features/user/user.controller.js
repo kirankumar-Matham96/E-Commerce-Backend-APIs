@@ -10,9 +10,9 @@ class UserController {
   constructor() {
     this.userRepository = new UserRepository();
   }
-  getAllUsers = (req, res, next) => {
+  getAllUsers = async (req, res, next) => {
     try {
-      const users = userRepository.getAll();
+      const users = await this.userRepository.getAll();
       res.status(200).json({ status: "success", users });
     } catch (error) {
       console.log(error);
@@ -67,7 +67,7 @@ class UserController {
 
       // creating jwt
       const jwtToken = jwt.sign(
-        { id: userFound.id, email: userFound.email },
+        { id: userFound._id, email: userFound.email },
         process.env.SECRET_KEY,
         {
           expiresIn: "1h",

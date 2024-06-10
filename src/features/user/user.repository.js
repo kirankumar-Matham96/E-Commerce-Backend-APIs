@@ -2,9 +2,13 @@ import { ApplicationError } from "../../errorHandler/applicationError.js";
 import { getDB } from "../../config/mongodb.js";
 
 class UserRepository {
-  getAll() {
+  getAll = async () => {
+    const db = getDB("e-com-db");
+    const usersCollection = db.collection("users");
+    const users = await usersCollection.find().toArray();
+    console.log({ users });
     return users;
-  }
+  };
 
   get(id) {
     const foundUser = users.find((user) => user.id === id);

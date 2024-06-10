@@ -9,17 +9,27 @@ const router = express.Router();
 const productController = new ProductController();
 
 // all the paths to controller methods
-router.get("/", productController.getAllProducts);
-router.get("/filter", productController.filterProducts);
-router.get("/:id", productController.getOneProduct);
+router.get("/", (req, res, next) =>
+  productController.getAllProducts(req, res, next)
+);
+router.get("/filter", (req, res, next) =>
+  productController.filterProducts(req, res, next)
+);
+router.get("/:id", (req, res, next) =>
+  productController.getOneProduct(req, res, next)
+);
 router.post(
   "/add-width-image-file",
   uploadFile.single("imageUrl"),
-  productController.addProductWithImageFile
+  (req, res, next) => productController.addProductWithImageFile(req, res, next)
 );
-router.post("/add-with-image-url", productController.addProductWithImageUrl);
+// router.post("/add-with-image-url", (req, res) =>
+//   productController.addProductWithImageUrl(req, res)
+// );
 
-router.put("/:id/rate", productController.rateProduct);
+router.put("/rate", (req, res, next) =>
+  productController.rateProduct(req, res, next)
+);
 
 router.get("*", (req, res) => {
   res.status(404).send("API Not Found");
