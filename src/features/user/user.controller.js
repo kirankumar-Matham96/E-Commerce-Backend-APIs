@@ -77,6 +77,7 @@ class UserController {
       return res.status(200).json({
         status: "success",
         message: "login success!",
+        userId: userFound._id,
         token: jwtToken,
       });
     } catch (error) {
