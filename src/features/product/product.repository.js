@@ -4,8 +4,6 @@ import { ApplicationError } from "../../errorHandler/applicationError.js";
 
 class ProductRepository {
   constructor() {
-    // this.db = getDB("e-com-db");
-    // this.productsCollection = db.collection("products");
     this.collection = "products";
   }
 
@@ -36,40 +34,23 @@ class ProductRepository {
       const db = getDB("e-com-db");
       const productsCollection = db.collection(this.collection);
 
-      // find the product
-      const productFound = await this.get(productId);
+      // remove existing rating of a user
+      await productsCollection.updateOne(
+        { _id: ObjectId.createFromHexString(productId) },
+        { $pull: { ratings: { userId: ObjectId.createFromHexString(userId) } } }
+      );
 
-      // find the rating
-      const userRatings = productFound?.ratings?.find((rating) => {
-        console.log("rating.userId => ", rating.userId);
-        console.log("passed userId => ", ObjectId.createFromHexString(userId));
-        // return rating.userId == ObjectId.createFromHexString(userId);
-        return rating.userId.equals(ObjectId.createFromHexString(userId));
-      });
-
-      if (userRatings) {
-        // update the rating
-        await productsCollection.updateOne(
-          {
-            _id: ObjectId.createFromHexString(productId),
-            "ratings.userId": ObjectId.createFromHexString(userId),
+      // add rating
+      await productsCollection.updateOne(
+        {
+          _id: ObjectId.createFromHexString(productId),
+        },
+        {
+          $push: {
+            ratings: { userId: ObjectId.createFromHexString(userId), rating },
           },
-          {
-            $set: { "ratings.$.rating": rating },
-          }
-        );
-      } else {
-        await productsCollection.updateOne(
-          {
-            _id: ObjectId.createFromHexString(productId),
-          },
-          {
-            $push: {
-              ratings: { userId: ObjectId.createFromHexString(userId), rating },
-            },
-          }
-        );
-      }
+        }
+      );
     } catch (error) {
       console.log(error);
     }

@@ -136,3 +136,4 @@
 {"level":"info","message":"Mon Jun 10 2024 06:38:59 GMT+0530 (India Standard Time) - Req URL: /api/products/rate - Req Body: {\"productId\":\"66664a90de1f3dc290d059e3\",\"rating\":\"5\"}","service":"Request - logging"}
 {"level":"info","message":"Mon Jun 10 2024 06:39:16 GMT+0530 (India Standard Time) - Req URL: /api/products/rate - Req Body: {\"productId\":\"66664a90de1f3dc290d059e3\",\"rating\":\"2\"}","service":"Request - logging"}
 {"level":"info","message":"Mon Jun 10 2024 06:40:07 GMT+0530 (India Standard Time) - Req URL: /api/products/rate - Req Body: {\"productId\":\"66664a90de1f3dc290d059e3\",\"rating\":2}","service":"Request - logging"}
+{"level":"info","message":"Mon Jun 10 2024 06:50:34 GMT+0530 (India Standard Time) - Req URL: /api/products/rate - Req Body: {\"productId\":\"66664a90de1f3dc290d059e3\",\"rating\":3.2}","service":"Request - logging"}
