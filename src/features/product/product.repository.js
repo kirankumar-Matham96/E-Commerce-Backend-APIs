@@ -98,7 +98,7 @@ class ProductRepository {
       const productsCollection = db.collection(this.collection);
       const results = await productsCollection
         .find(filterExpression)
-        .project({ name: 1, price: 1, _id: 0 })
+        .project({ name: 1, price: 1, _id: 0, ratings: { $slice: 1 } })
         .toArray();
       return results;
     } catch (error) {

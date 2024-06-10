@@ -22,7 +22,6 @@ const createCounter = async (db) => {
   const existingCounter = await db
     .collection("counters")
     .findOne({ _id: "cartItemId" });
-  console.log({ existingCounter });
   if (!existingCounter) {
     await db.collection("counters").insertOne({ _id: "cartItemId", value: 0 });
   }
