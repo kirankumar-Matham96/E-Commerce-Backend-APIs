@@ -9,20 +9,28 @@ const router = express.Router();
 const productController = new ProductController();
 
 // all the paths to controller methods
-router.get("/", (req, res, next) =>
-  productController.getAllProducts(req, res, next)
-);
 router.get("/filter", (req, res, next) =>
   productController.filterProducts(req, res, next)
 );
+
+router.get("/category_avg_price", (req, res) =>
+  productController.averagePrice(req, res)
+);
+
 router.get("/:id", (req, res, next) =>
   productController.getOneProduct(req, res, next)
 );
+
+router.get("/", (req, res, next) =>
+  productController.getAllProducts(req, res, next)
+);
+
 router.post(
   "/add-width-image-file",
   uploadFile.single("imageUrl"),
   (req, res, next) => productController.addProductWithImageFile(req, res, next)
 );
+
 // router.post("/add-with-image-url", (req, res) =>
 //   productController.addProductWithImageUrl(req, res)
 // );

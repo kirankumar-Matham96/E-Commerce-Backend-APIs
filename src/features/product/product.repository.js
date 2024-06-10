@@ -105,6 +105,29 @@ class ProductRepository {
       console.log(error);
     }
   };
+
+  averageProductPricePerCategory = async () => {
+    try {
+      const db = getDB("e-com-db");
+      const productsCollection = db.collection(this.collection);
+
+      return await productsCollection
+        .aggregate([
+          {
+            $group: {
+              _id: "$category",
+              averagePrice: {
+                $avg: "$price",
+              },
+            },
+          },
+        ])
+        .toArray();
+    } catch (error) {
+      console.log(error);
+      throw new ApplicationError("something went wrong", 500);
+    }
+  };
 }
 
 export default ProductRepository;

@@ -201,3 +201,6 @@
 {"level":"info","message":"Mon Jun 10 2024 20:07:22 GMT+0530 (India Standard Time) - Req URL: /api/products/filter?minPrice=100&maxPrice=3000&category=[%27food%27] - Req Body: {}","service":"Request - logging"}
 {"level":"info","message":"Mon Jun 10 2024 20:07:55 GMT+0530 (India Standard Time) - Req URL: /api/products/filter?minPrice=100&maxPrice=3000&category=[%27food%27] - Req Body: {}","service":"Request - logging"}
 {"level":"info","message":"Mon Jun 10 2024 20:14:48 GMT+0530 (India Standard Time) - Req URL: /api/products/filter?minPrice=100&maxPrice=3000&category=[%27food%27] - Req Body: {}","service":"Request - logging"}
+{"level":"info","message":"Mon Jun 10 2024 20:15:23 GMT+0530 (India Standard Time) - Req URL: /api/products/filter?minPrice=100&maxPrice=3000&category=[%27food%27] - Req Body: {}","service":"Request - logging"}
+{"level":"info","message":"Mon Jun 10 2024 20:39:31 GMT+0530 (India Standard Time) - Req URL: /api/products - Req Body: {}","service":"Request - logging"}
+{"level":"info","message":"Mon Jun 10 2024 20:39:58 GMT+0530 (India Standard Time) - Req URL: /api/products/category_avg_price - Req Body: {}","service":"Request - logging"}
