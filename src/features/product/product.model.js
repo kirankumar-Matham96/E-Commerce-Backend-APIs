@@ -10,7 +10,7 @@ class ProductModel {
     rating = []
   ) {
     this.name = name;
-    this.quantity = quantity;
+    this.quantity = parseInt(quantity);
     this.imageUrl = imageUrl;
     this.ratings = rating;
     this.description = description;

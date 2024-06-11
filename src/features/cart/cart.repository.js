@@ -116,8 +116,7 @@ class CartRepository {
         { $inc: { value: 1 } },
         { ReturnDocument: "after" }
       );
-    console.log({ resultDocument });
-    return resultDocument.value.value;
+    return resultDocument.value;
   };
 }
 

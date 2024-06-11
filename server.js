@@ -10,6 +10,8 @@ import cors from "cors";
 import ProductRouter from "./src/features/product/products.routes.js";
 import UserRouter from "./src/features/user/user.routes.js";
 import CartRouter from "./src/features/cart/cart.routes.js";
+import OrderRouter from "./src/features/order/orders.routes.js";
+
 // import basicAuthorizer from "./src/middleware/basicAuth.middleware.js";
 import { jwtAuth } from "./src/middleware/jwtAuth.middleware.js";
 import { errorHandlerMiddleware } from "./src/middleware/customErrorHandling.middleware.js";
@@ -51,6 +53,9 @@ app.use("/api/cart", jwtAuth, CartRouter);
 
 // for user requests related to register and login
 app.use("/api/users", UserRouter);
+
+// for order requests
+app.use("/api/orders", jwtAuth, OrderRouter);
 
 // custom error handling middleware
 app.use(errorHandlerMiddleware);

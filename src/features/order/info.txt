@@ -1,0 +1,13 @@
+Place order
+
+Note: All operations below should be performed or nothing should happen. (No partial executions*)
+
+  1. Get cart items of user and calculate the total amount.
+  2. Create record for order.
+  3. Reduce the stock.
+  4. Clear the cart.
+
+  // lateral stage to upgrade
+  5. Deduct the payment.
+  6. Inform sellers.
+  7. Inform to courier.

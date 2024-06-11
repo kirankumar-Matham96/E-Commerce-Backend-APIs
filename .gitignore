@@ -7,3 +7,6 @@
 /.env
 
 /logs.log
+
+# personal tracking notes
+/mongodb.txt
