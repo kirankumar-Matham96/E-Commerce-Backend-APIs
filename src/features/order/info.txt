@@ -11,3 +11,8 @@ Note: All operations below should be performed or nothing should happen. (No par
   5. Deduct the payment.
   6. Inform sellers.
   7. Inform to courier.
+
+Replication of mongodb
+
+      1. mongo --dbpath=<directory>
+      2. 

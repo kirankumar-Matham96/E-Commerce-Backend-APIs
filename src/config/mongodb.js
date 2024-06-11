@@ -16,9 +16,9 @@ const connectToMongoDB = async () => {
   }
 };
 
-// export const getClient = () => {
-//   return clientInstance;
-// };
+export const getClient = () => {
+  return clientInstance;
+};
 
 export const getDB = (dbName) => clientInstance.db(dbName);
 
