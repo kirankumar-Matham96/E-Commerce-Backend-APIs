@@ -1,4 +1,4 @@
-import LikeRepository from "./like.repository";
+import LikeRepository from "./like.repository.js";
 import { ApplicationError } from "../../middleware/customErrorHandling.middleware.js";
 
 class LikeController {
@@ -11,32 +11,43 @@ class LikeController {
       const { id, type } = req.body;
       const userId = req.userId;
 
-      if (type != "products" || type != "categories") {
+      if (type != "product" && type != "category") {
         throw new ApplicationError("invalid type", 400);
       }
 
-      if (type == "products") {
+      if (type == "product") {
         await this.likeRepo.likeProduct(userId, id);
       } else {
         await this.likeRepo.likeCategory(userId, id);
       }
-      
+
+      res.status(200).send("Item liked");
     } catch (error) {
       console.log(error);
       next(error);
-      // res.status(500).send("something went wrong");
     }
   };
 
-  getLikes = async (req, res, next) => {
+  getAllLikes = async (req, res, next) => {
     try {
-      const {} = req;
       const userId = req.userId;
-      this.likeRepo;
+      const likes = await this.likeRepo.getAllLikes(userId);
+      res.status(200).send(likes);
     } catch (error) {
       console.log(error);
       next(error);
-      // res.status(500).send("something went wrong");
+    }
+  };
+
+  getTypeLikes = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const { type } = req.body;
+      const likes = await this.likeRepo.getTypeLikes(id, type);
+      res.status(200).send(likes);
+    } catch (error) {
+      console.log(error);
+      next(error);
     }
   };
 }

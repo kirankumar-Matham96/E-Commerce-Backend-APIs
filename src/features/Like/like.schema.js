@@ -11,6 +11,23 @@ export const likeSchema = new mongoose.Schema({
   },
   paths: {
     type: String,
-    enum: ["products, categories"]
+    enum: ["products", "categories"],
   },
-});
+})
+  .pre("save", (next) => {
+    console.log("new like coming in...");
+
+    next();
+  })
+  .post("save", (doc) => {
+    console.log("A new like has been added");
+    console.log(doc);
+  })
+  .pre("find", (next) => {
+    console.log("finding...");
+    next();
+  })
+  .post("find", (doc) => {
+    console.log("found doc");
+    console.log(doc);
+  });
