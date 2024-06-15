@@ -14,7 +14,7 @@ class ProductModel {
     this.imageUrl = imageUrl;
     this.ratings = rating;
     this.description = description;
-    this.category = category;
+    this.categories = category;
     this.price = parseFloat(price);
     this.sizes = sizes;
   }

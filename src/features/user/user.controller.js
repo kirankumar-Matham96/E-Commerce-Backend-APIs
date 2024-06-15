@@ -34,6 +34,13 @@ class UserController {
   userSignup = async (req, res, next) => {
     try {
       const { name, email, password, type } = req.body;
+      const passwordPattern = /^(?=.*[!@#$%&*-+])[a-zA-Z0-9\d@#$!%&*-+]{8,20}$/;
+      if (!passwordPattern.test(password)) {
+        throw new ApplicationError(
+          "Password should be be b/w 8-20 characters and should contain a special character",
+          400
+        );
+      }
       const hashedPassword = await bcrypt.hash(password, saltRounds);
       const user = new UserModel(name, email, hashedPassword, type);
       const newUser = await this.userRepository.create(user);
@@ -89,6 +96,19 @@ class UserController {
   userSignOut = (req, res) => {
     // TODO: Need to handle jwt token on sign out
     res.status(200).json({ status: "success", msg: "Logged out!" });
+  };
+
+  resetPassword = async (req, res) => {
+    try {
+      const { newPassword } = req.body;
+      const userId = req.userId;
+      const hashedPass = await bcrypt.hash(newPassword, saltRounds);
+      await this.userRepository.resetPass(userId, hashedPass);
+      res.status(200).send("password updated");
+    } catch (error) {
+      console.log(error);
+      res.status(500).send("something went wrong");
+    }
   };
 }
 

@@ -39,10 +39,11 @@ export default class ProductController {
   //   }
   // };
 
-  addProductWithImageFile = async (req, res) => {
+  addProductWithImageFile = async (req, res, next) => {
     try {
-      const { name, description, quantity, category, price, rating } = req.body;
+      const { name, description, quantity, price, rating } = req.body;
       const imageUrl = req.file.filename;
+      const category = req.body.category.split(",").map((category) => category.trim());
       const sizes = req.body.sizes.split(",");
 
       const newProduct = new ProductModel(
@@ -54,8 +55,6 @@ export default class ProductController {
         price,
         sizes
       );
-
-      console.log({ newProduct });
 
       const product = await this.productRepository.add(newProduct);
 

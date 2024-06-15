@@ -1,83 +1,58 @@
-import mongoose from "mongoose";
-import productsSchema from "./products.schema.js";
-import reviewSchema from "./review.schema.js";
-import categorySchema from "./category.schema.js";
+import { ObjectId } from "mongodb";
+import { getDB } from "../../config/mongodb.js";
 import { ApplicationError } from "../../errorHandler/applicationError.js";
-// import { ObjectId } from "mongoose";
-
-const ProductModel = new mongoose.model("products", productsSchema);
-const ReviewModel = new mongoose.model("reviews", reviewSchema);
-const CategoryModel = new mongoose.model("categories", categorySchema);
 
 class ProductRepository {
+  constructor() {
+    this.collection = "products";
+  }
+
   add = async (product) => {
     try {
-      // adding/updating the product
-      const newProduct = new ProductModel(product);
-      await newProduct.save();
-
-      // adding/updating the category
-      await CategoryModel.updateMany(
-        {
-          _id: { $in: product.categories },
-        },
-        {
-          $push: { products: newProduct._id },
-        }
-      );
-
+      const db = getDB("e-com-db");
+      const productsCollection = db.collection(this.collection);
+      await productsCollection.insertOne(product);
       return product;
     } catch (error) {
       console.log(error);
-      if (error instanceof mongoose.Error.ValidationError) {
-        throw error;
-      }
-      throw new ApplicationError("something went wrong", 500);
     }
   };
 
   getAll = async () => {
     try {
-      return await ProductModel.find();
+      const db = getDB("e-com-db");
+      const productsCollection = db.collection(this.collection);
+      const productsCursor = await productsCollection.find();
+      return productsCursor.toArray();
     } catch (error) {
       console.log(error);
-      if (error instanceof mongoose.Error.ValidationError) {
-        throw error;
-      }
-      throw new ApplicationError("something went wrong", 500);
     }
   };
 
   rate = async (userId, productId, rating) => {
     try {
-      const productToUpdate = await ProductModel.findById(productId);
+      const db = getDB("e-com-db");
+      const productsCollection = db.collection(this.collection);
 
-      if (!productToUpdate) {
-        throw new ApplicationError("product not found", 404);
-      }
+      // remove existing rating of a user
+      await productsCollection.updateOne(
+        { _id: ObjectId.createFromHexString(productId) },
+        { $pull: { ratings: { userId: ObjectId.createFromHexString(userId) } } }
+      );
 
-      const userReview = await ReviewModel.findOne({
-        productId: productId,
-        userId: userId,
-      });
-
-      if (userReview) {
-        userReview.rating = rating;
-        await userReview.save();
-      } else {
-        const newUserReview = new ReviewModel({
-          productId: mongoose.Types.ObjectId.createFromHexString(productId),
-          userId: mongoose.Types.ObjectId.createFromHexString(userId),
-          rating,
-        });
-        await newUserReview.save();
-      }
+      // add rating
+      await productsCollection.updateOne(
+        {
+          _id: ObjectId.createFromHexString(productId),
+        },
+        {
+          $push: {
+            ratings: { userId: ObjectId.createFromHexString(userId), rating },
+          },
+        }
+      );
     } catch (error) {
       console.log(error);
-      if (error instanceof mongoose.Error.ValidationError) {
-        throw error;
-      }
-      throw new ApplicationError("something went wrong", 500);
     }
   };
 

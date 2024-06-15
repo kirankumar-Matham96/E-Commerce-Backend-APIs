@@ -11,13 +11,15 @@ import ProductRouter from "./src/features/product/products.routes.js";
 import UserRouter from "./src/features/user/user.routes.js";
 import CartRouter from "./src/features/cart/cart.routes.js";
 import OrderRouter from "./src/features/order/orders.routes.js";
+import LikeRouter from "./src/features/Like/like.routes.js";
 
 // import basicAuthorizer from "./src/middleware/basicAuth.middleware.js";
 import { jwtAuth } from "./src/middleware/jwtAuth.middleware.js";
 import { errorHandlerMiddleware } from "./src/middleware/customErrorHandling.middleware.js";
 import { loggerMiddleware } from "./src/middleware/logger.middleware.js";
 import { invalidRoutesMiddleware } from "./src/middleware/invalidRoutes.middleware.js";
-import connectToDB from "./src/config/mongodb.js";
+// import connectToDB from "./src/config/mongodb.js";
+import connectToDB from "./src/config/mongoose.js";
 
 // reading swagger config file
 const swaggerFilePath = path.join(path.resolve(), "swagger.json");
@@ -56,6 +58,9 @@ app.use("/api/users", UserRouter);
 
 // for order requests
 app.use("/api/orders", jwtAuth, OrderRouter);
+
+// for like requests
+app.use("/api/likes", jwtAuth, LikeRouter);
 
 // custom error handling middleware
 app.use(errorHandlerMiddleware);
